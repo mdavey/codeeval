@@ -1,5 +1,6 @@
 
 -- I wonder if I could have used a forward reference in a regex?
+-- Lua patterns dont have forward references...
 local function split(s, split_on)
     local words = {}
     local current_word = ''
