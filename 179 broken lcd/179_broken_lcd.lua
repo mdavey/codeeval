@@ -1,3 +1,39 @@
+-- One day I'll start my own stdlibrary (or just find one I like)
+
+-- slice a table, same convention as string.sub
+-- table_slice({1,2,3}, 1, 1) => {1}
+-- table_slice({1,2,3}, 1, 3) => {1, 2, 3}
+local function table_slice(t, from, to)
+    local slice = {}
+    for i=from, to do
+        table.insert(slice, t[i])
+    end
+    return slice
+end
+
+assert(table.concat(table_slice({1, 2, 3}, 1, 1)) == '1')
+assert(table.concat(table_slice({1, 2, 3}, 1, 3)) == '123')
+assert(table.concat(table_slice({1, 2, 3}, 3, 3)) == '3')
+
+
+-- returns all slices of a table of a size
+-- table_slices({1,2,3}, 1) => {{1}, {2}, {3}}
+-- table_slices({1,2,3}, 2) => {{1, 2}, {2, 3}}
+-- table_slices({1,2,3}, 3) => {{1,2,3}}
+local function table_slices(t, size)
+    local slices = {}
+    for i=1, #t - size + 1 do
+        table.insert(slices, table_slice(t, i, i + size - 1))
+    end
+    return slices
+end
+
+assert(table.concat(table_slices({1,2,3}, 2)[1]) == '12')
+assert(table.concat(table_slices({1,2,3}, 2)[2]) == '23')
+assert(table_slices({1,2,3}, 2)[3] == nil)
+
+
+
 
 -- Not using bitwise operations because I'd spend as long
 -- converting the strings, than just doing string comparisons
@@ -51,25 +87,24 @@ local function cmp_binary(base, x)
     -- print('    CMP', base, x, 'true')
     return true
 end
+
+
+local function check_segment(segment, digits)
+    assert(#segment == #digits)
+    for i=1, #segment do            
+        if not cmp_binary(segment[i], digits[i]) then
+            return false
+        end
+    end    
+    return true
+end
     
 
 local function broken_lcd(line)
     local segments, digits = parse_line(line)
     
-    -- this took 10mins to sort out.  So many off by one errors
-    -- base 1 indexing is really easy, until you need to do
-    -- something non trivial.  Then there are +1 and -1 everywhere
-    for i=1, #segments-#digits+1 do
-        local match = true
-        for j=0, #digits-1 do
-            -- print('  Comparing i+j', i, j, i+j)
-            if not cmp_binary(segments[i+j], digits[j+1]) then
-                match = false
-                break
-            end
-        end
-        
-        if match then
+    for _,segment in ipairs(table_slices(segments, #digits)) do
+        if check_segment(segment, digits) then
             return '1'
         end
     end
