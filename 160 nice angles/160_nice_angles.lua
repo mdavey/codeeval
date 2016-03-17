@@ -4,7 +4,7 @@ local function nice_angles(line)
     decimal, fractional = tonumber(decimal), tonumber(fractional)
     local minutes = math.floor(fractional * 0.60 * 100)
     fractional = fractional - ((minutes / 100) / 0.60)
-    local seconds = math.floor((fractional * 0.60) * 0.60 * 100 * 100)
+    local seconds = math.floor((fractional * 0.60) * 0.60 * 100 * 100)  -- WAT!?
     return string.format('%0d.%02d\'%02d"', decimal, minutes, seconds)
 end
 
