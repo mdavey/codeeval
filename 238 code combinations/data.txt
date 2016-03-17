@@ -1,0 +1,10 @@
+**** | *co* | *de* | ****
+codx | decx
+co | dx
+***** | ***** | *****
+code
+c | o | d | e
+codedoc
+co | de
+de | oc
+code | odec | deco | ecod
