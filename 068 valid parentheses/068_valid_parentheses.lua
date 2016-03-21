@@ -3,7 +3,7 @@ local function push(t,v)
     t[#t+1] = v
 end
 
-local function pop(t, v) -- cold golf
+local function pop(t, v) -- code golf
     v, t[#t] = t[#t], nil
     return v
 end
